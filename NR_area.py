@@ -29,6 +29,11 @@ parse.add_argument("-v", "--verbose", action="store_true", help="increase "
 # parse the arguments passed in the command line
 args = parse.parse_args()
 
+# check that sensible input values have been given
+if(args.width <= 0 or args.length <= 0 or args.concentration <= 0
+    or args.target_area <= 0):
+    sys.exit("Error: You must provide positive values for each input! \n")
+
 # use the nano_area_calcs formulae to calculate the area, number, mols, and
 # volume of the nanorods
 area = calcs.area_NR(args.length, args.width)
@@ -36,6 +41,8 @@ number = calcs.number_NP(area, args.target_area)
 mols = calcs.mols_NP(number)
 volume = calcs.volume_NP(args.concentration, mols)
 
+# decide how much of this info to output, depending whether the user wants
+# verbosity
 if args.verbose:
     print("The area of a single nanorod is", "%.4E" % area, "cm^2 \n")
     print("The number of nanorods required for", args.target_area, "cm^2",

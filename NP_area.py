@@ -27,6 +27,10 @@ parse.add_argument("-v", "--verbose", action="store_true", help="increase "
 # parse the arguments passed in the command line
 args = parse.parse_args()
 
+# check that sensible input values have been given
+if(args.diameter <= 0 or args.concentration <= 0 or args.target_area <= 0):
+    sys.exit("Error: You must provide positive values for each input! \n")
+
 # use the nano_area_calcs formulae to calculate the area, number, mols, and
 # volume of the nanoparticles
 area = calcs.area_NP(args.diameter)
