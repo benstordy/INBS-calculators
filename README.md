@@ -6,4 +6,4 @@ raised in the Issues section on this webpage.
 
 NP_area.py and NR_area.py are designed to be run from the command line. To use them, clone the library to your destination of
 choice. Using a command line program (such as Terminal on Mac, or git bash on Windows), navigate to the library location. Once
-there, type "python <filename.py> -h" to pull up the file help text. This will guide you through use of the files.
+there, type "python <filename>.py -h" to pull up the file help text. This will guide you through use of the files.
