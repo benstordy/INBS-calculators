@@ -46,3 +46,25 @@ def area_NR(length, width):
     # sum to get total area.
     area = side_area+caps_area
     return area
+
+# create a function to calculate the microlitres of DNA solution required,
+# taking total rod area (cm^2) and DNA concentration (uM) as arguments.
+def volume_DNA(area, DNA_conc):
+    # calculates the number of DNA to add to get one DNA strand per 7nm^2
+    # converting area in cm^2 to nm^2
+    num_DNA = area*(1e14)/7
+    # calculates volume of DNA solution to add to get the target concentration
+    # vol_DNA=((num_DNA/constants.Avogadro)[mol]/(DNA_conc*1e-6[mol/L]))[L]*1e6
+    vol_DNA = ((num_DNA/constants.Avogadro)/(DNA_conc*1e-6))*1e6
+    return vol_DNA
+
+# create a function to calculate the microlitres of 5mg/mL PEG required,
+# taking total rod area (cm^2) as an argument. Assumes 5000g/mol (using PEG5k)
+def volume_PEG(area):
+    # calculates the number of PEG to add to get ten PEG strands per 1nm^2
+    # converting area in cm^2 to nm^2
+    num_PEG = area*(1e14)*10
+    # calculates volume of PEG solution to add to get the target concentration
+    # vol_PEG=((num_PEG/constants.Avogadro)[mol]*(5000[g/mol]/5[g/L]))[L]*1e6
+    vol_PEG = (num_PEG/constants.Avogadro)*(5000/5)*1e6
+    return vol_PEG

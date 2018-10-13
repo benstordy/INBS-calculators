@@ -18,12 +18,15 @@ parse = argparse.ArgumentParser()
 # use the add_argument function to specify which command line options the
 # calculator will accept. We need four inputs, the length, width, concentration,
 # and target area.
-parse.add_argument("length", type=float, help='the length of the NR (in nm)')
-parse.add_argument("width", type=float, help='the width of the NR (in nm)')
+parse.add_argument("length", type=float, help="the length of the NR (in nm)")
+parse.add_argument("width", type=float, help="the width of the NR (in nm)")
 parse.add_argument("concentration", type=float, help="the concentration of the"
-                    "NP solution (in nM)")
+                    " NP solution (in nM)")
 parse.add_argument("target_area", type=float, help="the target area of the NP"
                     " (in cm^2)")
+parse.add_argument("DNA_conc", type=float, nargs="?", default=10, help="the "
+                    "concentration of the DNA solution (in uM). This is set to "
+                    "10uM by default")
 parse.add_argument("-v", "--verbose", action="store_true", help="increase "
                     "detail of output")
 # parse the arguments passed in the command line
@@ -34,23 +37,31 @@ if(args.width <= 0 or args.length <= 0 or args.concentration <= 0
     or args.target_area <= 0):
     sys.exit("Error: You must provide positive values for each input! \n")
 
-# use the nano_area_calcs formulae to calculate the area, number, mols, and
-# volume of the nanorods
+# use the nano_area_calcs formulae to calculate the area, number, mols, volume
+# of the nanorods, and volume of DNA to be added (in 10x excess)
 area = calcs.area_NR(args.length, args.width)
 number = calcs.number_NP(area, args.target_area)
 mols = calcs.mols_NP(number)
 volume = calcs.volume_NP(args.concentration, mols)
+vol_DNA = 10*calcs.volume_DNA(args.target_area, args.DNA_conc)
+vol_PEG = calcs.volume_PEG(args.target_area)
 
 # decide how much of this info to output, depending whether the user wants
 # verbosity
 if args.verbose:
+    print("For", args.target_area, "cm^2: \n")
     print("The area of a single nanorod is", "%.4E" % area, "cm^2 \n")
-    print("The number of nanorods required for", args.target_area, "cm^2",
-        "is", "%.4E" % number, "\n")
-    print("The number of moles required for", args.target_area, "cm^2 is",
-        "%.4E" % mols,"\n")
-    print("The volume of", args.concentration, "nM nanorod solution required",
-        "for", args.target_area, "cm^2 is", "%.2f" % volume, "uL \n")
+    print("The number of nanorods required is", "%.4E" % number, "\n")
+    print("The number of moles is", "%.4E" % mols, "\n")
+    print("The volume of", args.concentration, "nM nanorod solution required"
+        "is", "%.1f" % volume, "uL \n")
+    print("The volume of", args.DNA_conc, "uM DNA solution required is", "%.1f"
+        % vol_DNA, "uL \n")
+    print("The volume of 5mg/mL sulfo-NHS-PEG5k-diazirine solution required is",
+        "%.1f" % vol_PEG, "uL \n")
+
 else:
-    print("Use", "%.2f" % volume, "uL for", args.target_area, "cm^2 \n \nFor",
-        "more detail, try including the optional flag '-v' in your input \n")
+    print("Use", "%.1f" % volume, "uL GNR,", "%.1f" % vol_DNA, "uL DNA, and "
+        "%.1f" % vol_PEG, "uL PEG for", args.target_area, "cm^2 \n \nFor more "
+        "details, try including the optional verbosity flag '-v' in your input"
+         "\n")
