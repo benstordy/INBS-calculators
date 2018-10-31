@@ -5,7 +5,7 @@
 from scipy import constants
 
 # create a function to calculate the area of a sphere in square centimetres,
-# taking diameter in nanometres as an argument.
+# taking diameter in nanometres as an argument. Returns area in cm^2
 def area_NP(diameter):
     # get the surface area of a sphere from its diameter.
     area = constants.pi*diameter**2*1e-14
@@ -36,7 +36,7 @@ def volume_NP(concentration, mol):
     return vol
 
 # create a function to calculate the area of a rod in square centimetres,
-# taking length and width in nanometres as arguments.
+# taking length and width in nanometres as arguments. Returns area in cm^2
 def area_NR(length, width):
     # calculate area of a sphere with diameter = width of NR (in cm^2).
     caps_area = constants.pi*width**2*1e-14
@@ -47,8 +47,41 @@ def area_NR(length, width):
     area = side_area+caps_area
     return area
 
+# create a function to calculate the number of streptavidin tetramers required,
+# taking conjugated NP area (cm^2) as an argument.
+def number_SA(conj_area, num_NP):
+    # assuming streptavidin hydrodynamic diameter ~5nm, get projected area of
+    # streptavidin, treating it as a sphere (in cm^2)
+    projected_area = constants.pi*2.5**2*1e-14
+    # using the area of the nanoparticle with DNA conjugated to the surface,
+    # get number of streptavidin that would fit on surface (in cm^2)
+    num_SA_NP = (conj_area/projected_area)
+    # get total number of streptavidin to add using total number of NP in
+    # solution
+    num_SA = num_SA_NP*num_NP
+    return num_SA
+
+# create a function to calculate the microlitres of 5mg/mL streptavidin required
+# taking conjugated NP area (cm^2) as an argument. Assumes 55kDA MW
+def volume_SA(conj_area, num_NP):
+    # get the number of SA molecules required in total
+    num_SA = number_SA(conj_area, num_NP)
+    # calculates volume of SA solution to add to get the target concentration
+    # vol_SA=((num_SA/constants.Avogadro)[mol]*(50000[g/mol]/5[g/L]))[L]*1e6
+    vol_SA = (num_SA/constants.Avogadro)*(55000/5)*1e6
+    return vol_SA
+
+def volume_xlink(conj_area, num_NP):
+    # get the number of SA molecules required in total
+    num_SA = number_SA(conj_area, num_NP)
+    # 16 amine sites per streptavidin tetramer
+    num_xlink = num_SA*16
+    # 574g/L
+    vol_xlink = (num_xlink/constants.Avogadro)*(574/5)*1e6
+    return vol_xlink
+
 # create a function to calculate the microlitres of DNA solution required,
-# taking total rod area (cm^2) as an argument. Assumes DNA concentration = 10uM
+# taking total NP area (cm^2) as an argument. Assumes DNA concentration = 10uM
 def volume_DNA(area):
     # calculates the number of DNA to add to get one DNA strand per 7nm^2
     # converting area in cm^2 to nm^2
@@ -59,7 +92,7 @@ def volume_DNA(area):
     return vol_DNA
 
 # create a function to calculate the microlitres of 5mg/mL PEG required,
-# taking total rod area (cm^2) as an argument. Assumes 5000g/mol (using PEG5k)
+# taking total NP area (cm^2) as an argument. Assumes 5000g/mol (using PEG5k)
 def volume_PEG(area):
     # calculates the number of PEG to add to get ten PEG strands per 1nm^2
     # converting area in cm^2 to nm^2
