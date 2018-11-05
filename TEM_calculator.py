@@ -56,22 +56,22 @@ TEM_df['size'] = TEM_df.length*TEM_df.factor
 # get the rows of the 'size' column that do not contain scalebar measurements
 size_df = TEM_df['size'][TEM_df['scale'].isnull()]
 # separate the odd and even elements of the size
-size_df = pd.DataFrame({ 'nm_length' : size_df.iloc[::2], 'nm_width' :
+size_df = pd.DataFrame({ 'length_nm' : size_df.iloc[::2], 'width_nm' :
                             size_df.iloc[1::2]})
 
 # create a new dataframe to hold the lengths of the nanorods
-nm_measured_df = size_df.dropna(subset = ['nm_length']).reset_index(drop=True)
+measured_nm_df = size_df.dropna(subset = ['length_nm']).reset_index(drop=True)
 # create a new dataframe to hold the widths of the nanorods
-nm_width = size_df.dropna(subset = ['nm_width']).reset_index(drop=True)
+width_nm = size_df.dropna(subset = ['width_nm']).reset_index(drop=True)
 # combine the widths and lengths side-by-side for each measured nanorod
-nm_measured_df['nm_width'] = nm_width['nm_width']
+measured_nm_df['width_nm'] = width_nm['width_nm']
 # calculate the aspect ratio of each nanorod
-nm_measured_df['nm_AR'] = nm_measured_df.nm_length/nm_measured_df.nm_width
+measured_nm_df['AR_nm'] = measured_nm_df.length_nm/measured_nm_df.width_nm
 
 # apply some statistics
-means = nm_measured_df.mean()
-stdDev = nm_measured_df.std()
-n = nm_measured_df.count()
+means = measured_nm_df.mean()
+stdDev = measured_nm_df.std()
+n = measured_nm_df.count()
 
 # create a results dataframe
 results = pd.DataFrame({'parameter':means.index, 'mean':means.values, 'std dev':
@@ -81,11 +81,13 @@ print(results)
 
 # save the data if desired
 if args.save:
-    TEM_df.to_excel(writer, sheet_name='data')
     results.to_excel(writer, sheet_name='results')
+    measured_nm_df.to_excel(writer, sheet_name='measurements')
+    TEM_df.to_excel(writer, sheet_name='data')
+    
     writer.save()
 
 # plot a histogram if desired
 if args.plot:
-    nm_measured_df.hist()
+    measured_nm_df.hist()
     plt.show()
