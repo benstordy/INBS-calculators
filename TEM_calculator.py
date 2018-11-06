@@ -42,6 +42,11 @@ xl = pd.ExcelFile(args.filename)
 TEM_df = xl.parse(args.sheetname)
 writer = pd.ExcelWriter(args.output)
 
+# check that each image has a corresponding scale factor
+if (sum(TEM_df.img.notnull()) != sum(TEM_df.scale.notnull())):
+    sys.exit("Some of your images do not have corresponding scale factors. "
+            "Please add the missing scale factors. \n")
+
 # get the conversion factor from pixels to nanometres
 factors = TEM_df.scale/TEM_df.length
 # create a new column called factor, and fill it with the conversion factors for
@@ -84,7 +89,7 @@ if args.save:
     results.to_excel(writer, sheet_name='results')
     measured_nm_df.to_excel(writer, sheet_name='measurements')
     TEM_df.to_excel(writer, sheet_name='data')
-    
+
     writer.save()
 
 # plot a histogram if desired
