@@ -67,7 +67,7 @@ def volume_SA(conj_area, num_NP):
     # get the number of SA molecules required in total
     num_SA = number_SA(conj_area, num_NP)
     # calculates volume of SA solution to add to get the target concentration
-    # vol_SA=((num_SA/constants.Avogadro)[mol]*(50000[g/mol]/5[g/L]))[L]*1e6
+    # vol_SA=((num_SA/constants.Avogadro)[mol]*(55000[g/mol]/5[g/L]))[L]*1e6
     vol_SA = (num_SA/constants.Avogadro)*(55000/5)*1e6
     return vol_SA
 
@@ -94,7 +94,7 @@ def volume_DNA(area):
 # create a function to calculate the microlitres of 5mg/mL PEG required,
 # taking total NP area (cm^2) as an argument. Assumes 5000g/mol (using PEG5k)
 def volume_PEG(area):
-    # calculates the number of PEG to add to get ten PEG strands per 1nm^2
+    # calculates the number of PEG to add to get 10 PEG strands per 1nm^2
     # converting area in cm^2 to nm^2
     num_PEG = area*(1e14)*10
     # calculates volume of PEG solution to add to get the target concentration
