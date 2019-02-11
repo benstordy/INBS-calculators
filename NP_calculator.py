@@ -77,6 +77,7 @@ num_SA = calcs.number_SA(conj_area, num_NP)
 vol_SA = calcs.volume_SA(conj_area, num_NP)
 vol_xlink = calcs.volume_xlink(conj_area, num_NP)
 vol_DNA = calcs.volume_DNA(args.target_area)
+vol_DNA_XS = vol_DNA*1.6
 vol_PEG = calcs.volume_PEG(args.target_area)
 
 # decide how much of this info to output, depending whether the user wants
@@ -89,8 +90,8 @@ if args.verbose:
         "\n")
     print("The required volume of", args.concentration, "nM nanoparticle "
         "solution is", "%.1f" % volume, "uL \n")
-    print("The required volume of 10uM DNA solution is", "%.1f"
-        % vol_DNA, "uL \n")
+    print("The required volume of 10uM DNA solution (60% excess) is", "%.1f"
+        % vol_DNA_XS, "uL \n")
     print("The required volume of 5g/L SH-PEG5k-biotin solution is",
         "%.1f" % vol_PEG, "uL \n")
     print("The required number of streptavidins is", "%.4E" % (num_SA), "\n")
