@@ -50,11 +50,11 @@ def area_NR(length, width):
 # create a function to calculate the number of streptavidin tetramers required,
 # taking conjugated NP area (cm^2) as an argument.
 def number_SA(conj_area, num_NP):
-    # assuming streptavidin hydrodynamic diameter ~5nm, get projected area of
-    # streptavidin, treating it as a sphere (in cm^2)
-    projected_area = constants.pi*2.5**2*1e-14
+    # assuming streptavidin hydrodynamic diameter ~6nm, get projected area (in
+    # cm^2) of streptavidin, treating it as a sphere
+    projected_area = constants.pi*3**2*1e-14
     # using the area of the nanoparticle with DNA conjugated to the surface,
-    # get number of streptavidin that would fit on surface (in cm^2)
+    # get number of streptavidin that would fit on surface
     num_SA_NP = (conj_area/projected_area)
     # get total number of streptavidin to add using total number of NP in
     # solution

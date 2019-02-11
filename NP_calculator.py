@@ -63,10 +63,9 @@ else:
         "help using the calculator.\n")
     # use the nano_calcs formulae to calculate the area of a nanoparticle
     area = calcs.area_NP(args.diameter)
-    # use the nano_calcs formulae to calculate the area of a nanoparticle with
-    # DNA conjugated to its surface (DNA length is 25bp which is ~8nm on each
-    # side)
-    conj_area = calcs.area_NP(args.diameter+8*2)
+    # use the area_NP formula to calculate the area of a nanoparticle with
+    # DNA & PEG conjugated to its surface (~10 nm increase on each side)
+    conj_area = calcs.area_NP(args.diameter+10*2)
 
 # use the nano_calcs formulae to calculate the required number, mols, and volume
 # of the nanoparticles, and volumes of DNA and PEG to be added
