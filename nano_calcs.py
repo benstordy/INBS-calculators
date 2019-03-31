@@ -62,13 +62,13 @@ def number_SA(conj_area, num_NP):
     return num_SA
 
 # create a function to calculate the microlitres of 5mg/mL streptavidin required
-# taking conjugated NP area (cm^2) as an argument. Assumes 55kDA MW
+# taking conjugated NP area (cm^2) as an argument. Assumes 53kDA MW
 def volume_SA(conj_area, num_NP):
     # get the number of SA molecules required in total
     num_SA = number_SA(conj_area, num_NP)
     # calculates volume of SA solution to add to get the target concentration
-    # vol_SA=((num_SA/constants.Avogadro)[mol]*(55000[g/mol]/5[g/L]))[L]*1e6
-    vol_SA = (num_SA/constants.Avogadro)*(55000/5)*1e6
+    # vol_SA=((num_SA/constants.Avogadro)[mol]*(53000[g/mol]/5[g/L]))[L]*1e6
+    vol_SA = (num_SA/constants.Avogadro)*(53000/5)*1e6
     return vol_SA
 
 def volume_xlink(conj_area, num_NP):
