@@ -26,12 +26,12 @@ parse.add_argument("target_area", type=float, help="the target area of the NP"
 parse.add_argument("diameter", type=float, help="the diameter of the NP (in "
                     "nm)")
 parse.add_argument("length", type=float, nargs="?", default=0, help="the length"
-                    " of the NR (in nm). This must be defined for nanorod "
-                    "calculations.")
+                    " of the NR (in nm) - this must be defined for nanorod "
+                    "calculations")
 parse.add_argument("-NR", "--nanorods", action="store_true", help="perform "
-                    "nanorod calculations. Th")
-parse.add_argument("-v", "--verbose", action="store_true", help="increase "
-                    "detail of output")
+                    "nanorod calculations")
+# parse.add_argument("-v", "--verbose", action="store_true", help="increase "
+#                     "detail of output")
 # parse the arguments passed in the command line
 args = parse.parse_args()
 
@@ -76,32 +76,23 @@ num_SA = calcs.number_SA(conj_area, num_NP)
 vol_SA = calcs.volume_SA(conj_area, num_NP)
 vol_xlink = calcs.volume_xlink(conj_area, num_NP)
 vol_DNA = calcs.volume_DNA(args.target_area)
-vol_DNA_XS = vol_DNA*1.6
 vol_PEG = calcs.volume_PEG(args.target_area)
 
-# decide how much of this info to output, depending whether the user wants
-# verbosity
-if args.verbose:
-    print("For", args.target_area, "cm^2: \n")
-    print("The area of a single nanoparticle is", "%.4E" % area, "cm^2 \n")
-    print("The required number of nanoparticles is", "%.4E" % num_NP, "\n")
-    print("The required nanomoles of nanoparticles is", "%.4E" % (mols*1e9),
-        "\n")
-    print("The required volume of", args.concentration, "nM nanoparticle "
-        "solution is", "%.1f" % volume, "uL \n")
-    print("The required volume of 10uM DNA solution (60% excess) is", "%.1f"
-        % vol_DNA_XS, "uL \n")
-    print("The required volume of 5g/L SH-PEG5k-biotin solution is",
-        "%.1f" % vol_PEG, "uL \n")
-    print("The required number of streptavidins is", "%.4E" % (num_SA), "\n")
-    print("The required volume of 5g/L streptavidin solution with 30x excess is"
-        , "%.1f" % (30*vol_SA), "uL \n")
-    print("The required volume of 5g/L Sulfo-NHS-PEG4-diazirine solution with "
-        "125x excess is", "%.1f" % (125*vol_xlink), "uL \n")
-
-else:
-    print("Use", "%.1f" % volume, "uL GNP,", "%.1f" % vol_DNA, "uL DNA,", "%.1f"
-        % vol_PEG, "uL PEG, " "%.1f"% (25*vol_SA), "uL streptavidin,", "%.1f" %
-        (125*vol_xlink), "uL crosslinker for", args.target_area, "cm^2 \n \n"
-        "For more details, try including the optional verbosity flag '-v' in"
-        "your input \n")
+# data printout:
+print("For", args.target_area, "cm^2: \n")
+print("The surface area of a single", args.diameter, "nm nanoparticle is",
+    "%.4E" % area, "cm^2 \n")
+print("The required number of nanoparticles is", "%.4E" % num_NP, "\n")
+print("The required nanomoles of nanoparticles is", "%.4E" % (mols*1e9),
+    "\n")
+print("The required volume of", args.concentration, "nM nanoparticle "
+    "solution is", "%.2f" % volume, "uL \n")
+print("The required volume of 10uM DNA solution is", "%.2f"
+    % vol_DNA, "uL \n")
+print("The required volume of 5g/L SH-PEG5k-biotin solution is",
+    "%.2f" % vol_PEG, "uL (2.5/nm2) \n")
+print("The required number of streptavidins is", "%.4E" % (num_SA), "\n")
+print("The required volume of 5g/L streptavidin solution with 50x excess is"
+    , "%.2f" % (50*vol_SA), "uL \n")
+print("The required volume of 5g/L Sulfo-NHS-PEG4-diazirine solution with "
+    "250x excess is", "%.2f" % (250*vol_xlink), "uL \n")
